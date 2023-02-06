@@ -1,6 +1,6 @@
 package kafka.service;
 
-import kafka.entity.MessageTest;
+import kafka.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -9,19 +9,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 
 @Service
-public class KafkaMessagingService {
+public class KafkaProducerMessagingService {
 
-    @Value("${topic.name.producer}")
+    @Value("${topic.name}")
     private String topicName;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Autowired
-    public KafkaMessagingService(KafkaTemplate<String, String> kafkaTemplate) {
+    public KafkaProducerMessagingService(KafkaTemplate<String, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public String sendOrder(MessageTest messageTest) {
-        ListenableFuture<SendResult<String, String>> send = kafkaTemplate.send(topicName, messageTest.toString());
+    public String sendMessage(Message message) {
+        ListenableFuture<SendResult<String, Object>> send = kafkaTemplate.send(topicName, message);
         return send.toString();
     }
 }
