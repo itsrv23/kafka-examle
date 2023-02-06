@@ -17,17 +17,16 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 public class MessageController {
     private final KafkaProducerMessagingService service;
-    private static final int THREADS = 2;
+    private static final int THREADS = 4;
 
     @PostMapping
     public String sendMessage(@RequestBody Message message) {
-
         var es = Executors.newFixedThreadPool(THREADS);
         Task task = new Task();
         for (int i = 0; i < THREADS; i++) {
             es.execute(task);
         }
-
+        es.shutdown();
         return "fine ^-^ ";
     }
 
