@@ -16,7 +16,7 @@ public class KafkaConsumerMessagingService {
     private String topicName;
     @KafkaListener(topics = "${topic.name}", groupId = "group_id")
     public void consume(Message message) throws InterruptedException {
-        Thread.sleep(100);
+        Thread.sleep(10);
         log.debug(String.format("message created -> %s", message));
     }
 }
